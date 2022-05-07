@@ -17,7 +17,7 @@ public class CookieController {
     public String cookies
             (@CookieValue(name = "lang", defaultValue = "en") String langCookieValue,
              Model model) {
-        //below the lang parameter will become available
+        //below the lang parameter/attribute will become available
         //in the thymeleaf template under the name ${lang}
         model.addAttribute("lang", langCookieValue);
         return "cookies";
