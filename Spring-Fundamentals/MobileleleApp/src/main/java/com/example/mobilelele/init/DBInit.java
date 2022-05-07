@@ -1,73 +1,33 @@
 package com.example.mobilelele.init;
 
-import com.example.mobilelele.model.entity.Brand;
-import com.example.mobilelele.model.entity.Model;
-import com.example.mobilelele.model.entity.User;
-import com.example.mobilelele.model.entity.enums.Category;
-import com.example.mobilelele.repository.BrandRepository;
-import com.example.mobilelele.repository.UserRepository;
+import com.example.mobilelele.service.BrandService;
+import com.example.mobilelele.service.ModelService;
+import com.example.mobilelele.service.OfferService;
+import com.example.mobilelele.service.UserService;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 
 @Component
 public class DBInit implements CommandLineRunner {
-    private final BrandRepository brandRepository;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BrandService brandService;
+    private final ModelService modelService;
+    private final UserService userService;
+    private final OfferService offerService;
 
-    public DBInit(BrandRepository brandRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.brandRepository = brandRepository;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    public DBInit(BrandService brandService, ModelService modelService, UserService userService, OfferService offerService) {
+        this.brandService = brandService;
+        this.modelService = modelService;
+        this.userService = userService;
+        this.offerService = offerService;
     }
 
     @Override
     public void run(String... args) {
-        initializeBrandAndModels();
-        initializeUsers();
-
-
+        brandService.initializeBrand();
+        modelService.initializeModels();
+        userService.initializeUsersAndRoles();
+        offerService.initializeOffers();
     }
 
-    private void initializeUsers() {
-        if (userRepository.count() == 0) {
-            User admin = new User();
-            admin
-                    .setActive(true)
-                    .setUsername("admin")
-                    .setFirstName("Admin")
-                    .setLastName("Adminov")
-                    .setPassword(passwordEncoder.encode("test"));
-
-            userRepository.save(admin);
-        }
-    }
-
-
-    private void initializeBrandAndModels() {
-        if (brandRepository.count() == 0) {
-            Brand ford = new Brand().setName("Ford");
-
-            Model fiesta = new Model()
-                    .setBrand(ford)
-                    .setName("Fiesta")
-                    .setCategory(Category.CAR)
-                    .setStartYear(1976);
-
-            Model escort = new Model()
-                    .setBrand(ford)
-                    .setName("Escort")
-                    .setCategory(Category.CAR)
-                    .setStartYear(1967)
-                    .setEndYear(2004);
-
-            ford.setModels(List.of(fiesta, escort));
-
-            brandRepository.save(ford);
-
-        }
-    }
 }

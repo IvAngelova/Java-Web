@@ -36,6 +36,10 @@ public class UserLoginController {
         LOGGER.info("User with username {} tried to login. Success = {}",
                 userLoginBindingModel.getUsername(), loginSuccessful);
 
+        if(loginSuccessful){
+            return "redirect:/";
+        }
+
         return "redirect:/users/login";
     }
 }
