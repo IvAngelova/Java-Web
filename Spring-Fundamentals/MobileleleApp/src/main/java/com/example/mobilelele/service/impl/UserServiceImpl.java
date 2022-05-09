@@ -2,8 +2,9 @@ package com.example.mobilelele.service.impl;
 
 import com.example.mobilelele.model.entity.User;
 import com.example.mobilelele.model.entity.UserRole;
-import com.example.mobilelele.model.entity.enums.Role;
+import com.example.mobilelele.model.entity.enums.RoleEnum;
 import com.example.mobilelele.model.service.UserLoginServiceModel;
+import com.example.mobilelele.model.service.UserRegistrationServiceModel;
 import com.example.mobilelele.repository.UserRepository;
 import com.example.mobilelele.repository.UserRoleRepository;
 import com.example.mobilelele.service.UserService;
@@ -44,12 +45,7 @@ public class UserServiceImpl implements UserService {
 
         if (success) {
             User loggedInUser = byUsername.get();
-            currentUser.setLoggedIn(true)
-                    .setUsername(loggedInUser.getUsername())
-                    .setFirstName(loggedInUser.getFirstName())
-                    .setLastName(loggedInUser.getLastName());
-
-            loggedInUser.getRoles().forEach(r -> currentUser.addRole(r.getRole()));
+            login(loggedInUser);
         }
 
         return success;
@@ -67,11 +63,37 @@ public class UserServiceImpl implements UserService {
         initializeUsers();
     }
 
+    @Override
+    public void registerAndLoginUser(UserRegistrationServiceModel userRegistrationServiceModel) {
+        UserRole userRole = userRoleRepository.findByRole(RoleEnum.USER);
+
+        User newUser = new User();
+        newUser.setUsername(userRegistrationServiceModel.getUsername())
+                .setFirstName(userRegistrationServiceModel.getFirstName())
+                .setLastName(userRegistrationServiceModel.getLastName())
+                .setPassword(passwordEncoder.encode(userRegistrationServiceModel.getPassword()))
+                .setActive(true)
+                .setRoles(Set.of(userRole));
+
+        userRepository.save(newUser);
+
+        login(newUser);
+    }
+
+    private void login(User user){
+        currentUser.setLoggedIn(true)
+                .setUsername(user.getUsername())
+                .setFirstName(user.getFirstName())
+                .setLastName(user.getLastName());
+
+        user.getRoles().forEach(r -> currentUser.addRole(r.getRole()));
+    }
+
     private void initializeUsers() {
         if (userRepository.count() == 0) {
 
-            UserRole adminRole = userRoleRepository.findByRole(Role.ADMIN);
-            UserRole userRole = userRoleRepository.findByRole(Role.USER);
+            UserRole adminRole = userRoleRepository.findByRole(RoleEnum.ADMIN);
+            UserRole userRole = userRoleRepository.findByRole(RoleEnum.USER);
 
             User admin = new User();
             admin
@@ -99,8 +121,8 @@ public class UserServiceImpl implements UserService {
 
     private void initializeRoles() {
         if (userRoleRepository.count() == 0) {
-            UserRole adminRole = new UserRole().setRole(Role.ADMIN);
-            UserRole userRole = new UserRole().setRole(Role.USER);
+            UserRole adminRole = new UserRole().setRole(RoleEnum.ADMIN);
+            UserRole userRole = new UserRole().setRole(RoleEnum.USER);
 
             userRoleRepository.saveAll(List.of(adminRole, userRole));
         }

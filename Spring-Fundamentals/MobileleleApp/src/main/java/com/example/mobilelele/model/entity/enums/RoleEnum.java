@@ -1,5 +1,5 @@
 package com.example.mobilelele.model.entity.enums;
 
-public enum Role {
+public enum RoleEnum {
     USER, ADMIN
 }

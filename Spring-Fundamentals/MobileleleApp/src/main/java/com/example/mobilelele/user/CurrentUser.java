@@ -1,6 +1,6 @@
 package com.example.mobilelele.user;
 
-import com.example.mobilelele.model.entity.enums.Role;
+import com.example.mobilelele.model.entity.enums.RoleEnum;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -14,7 +14,7 @@ public class CurrentUser {
     private String username;
     private String firstName;
     private String lastName;
-    private Set<Role> roles = new HashSet<>();
+    private Set<RoleEnum> roles = new HashSet<>();
 
     public CurrentUser() {
     }
@@ -55,7 +55,7 @@ public class CurrentUser {
         return this;
     }
 
-    public CurrentUser addRole(Role role){
+    public CurrentUser addRole(RoleEnum role){
         roles.add(role);
         return this;
     }
@@ -66,7 +66,7 @@ public class CurrentUser {
     }
 
     public boolean isAdmin(){
-        return roles.contains(Role.ADMIN);
+        return roles.contains(RoleEnum.ADMIN);
     }
 
     public void clear(){

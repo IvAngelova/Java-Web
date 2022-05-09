@@ -1,6 +1,6 @@
 package com.example.mobilelele.model.entity;
 
-import com.example.mobilelele.model.entity.enums.Role;
+import com.example.mobilelele.model.entity.enums.RoleEnum;
 
 import javax.persistence.*;
 
@@ -13,7 +13,7 @@ public class UserRole {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private RoleEnum role;
 
     public UserRole() {
     }
@@ -27,11 +27,11 @@ public class UserRole {
         return this;
     }
 
-    public Role getRole() {
+    public RoleEnum getRole() {
         return role;
     }
 
-    public UserRole setRole(Role role) {
+    public UserRole setRole(RoleEnum role) {
         this.role = role;
         return this;
     }
