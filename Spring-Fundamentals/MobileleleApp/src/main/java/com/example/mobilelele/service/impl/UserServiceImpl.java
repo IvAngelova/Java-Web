@@ -80,6 +80,12 @@ public class UserServiceImpl implements UserService {
         login(newUser);
     }
 
+    @Override
+    public boolean isUsernameFree(String username) {
+        return userRepository.findByUsernameIgnoreCase(username)
+                .isEmpty();
+    }
+
     private void login(User user){
         currentUser.setLoggedIn(true)
                 .setUsername(user.getUsername())
