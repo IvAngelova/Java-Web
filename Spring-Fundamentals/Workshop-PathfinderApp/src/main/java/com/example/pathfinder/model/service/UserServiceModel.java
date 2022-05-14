@@ -1,89 +1,92 @@
-package com.example.pathfinder.model.entity;
+package com.example.pathfinder.model.service;
 
+import com.example.pathfinder.model.entity.Role;
 import com.example.pathfinder.model.entity.enums.LevelEnum;
 
-import javax.persistence.*;
 import java.util.Set;
 
-@Entity
-@Table(name = "users")
-public class User extends BaseEntity {
-    @Column(unique = true, nullable = false)
+public class UserServiceModel {
+    private Long id;
     private String username;
-
-    @Column(nullable = false)
     private String password;
-
     private int age;
-
-    @Column(name = "full_name", nullable = false)
     private String fullName;
-
-    @Column
     private String email;
-
-    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
-
-    @Enumerated(EnumType.STRING)
     private LevelEnum level;
 
-    public User() {
+    public UserServiceModel() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public UserServiceModel setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public UserServiceModel setUsername(String username) {
         this.username = username;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public UserServiceModel setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public int getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public UserServiceModel setAge(int age) {
         this.age = age;
+        return this;
     }
 
     public String getFullName() {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
+    public UserServiceModel setFullName(String fullName) {
         this.fullName = fullName;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public UserServiceModel setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public UserServiceModel setRoles(Set<Role> roles) {
         this.roles = roles;
+        return this;
     }
 
     public LevelEnum getLevel() {
         return level;
     }
 
-    public void setLevel(LevelEnum level) {
+    public UserServiceModel setLevel(LevelEnum level) {
         this.level = level;
+        return this;
     }
 }
