@@ -3,38 +3,50 @@ package com.example.mobilelele.model.view;
 import com.example.mobilelele.model.entity.enums.EngineEnum;
 import com.example.mobilelele.model.entity.enums.TransmissionEnum;
 
+import java.time.Instant;
 
-public class OfferSummaryView {
 
-    private long id;
-    private String description;
+public class OfferDetailsView {
+
+    private Long id;
+
+    private Instant created;
+
+    private Instant modified;
+
     private EngineEnum engine;
+
     private String imageUrl;
+
     private int mileage;
+
     private int price;
+
     private TransmissionEnum transmission;
+
     private int year;
+
     private String model;
+
+    private String seller;
+
     private String brand;
 
-    public OfferSummaryView() {
+    public Instant getCreated() {
+        return created;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public OfferSummaryView setId(long id) {
-        this.id = id;
+    public OfferDetailsView setCreated(Instant created) {
+        this.created = created;
         return this;
     }
 
-    public String getDescription() {
-        return description;
+    public Instant getModified() {
+        return modified;
     }
 
-    public OfferSummaryView setDescription(String description) {
-        this.description = description;
+    public OfferDetailsView setModified(Instant modified) {
+        this.modified = modified;
         return this;
     }
 
@@ -42,7 +54,7 @@ public class OfferSummaryView {
         return engine;
     }
 
-    public OfferSummaryView setEngine(EngineEnum engine) {
+    public OfferDetailsView setEngine(EngineEnum engine) {
         this.engine = engine;
         return this;
     }
@@ -51,7 +63,7 @@ public class OfferSummaryView {
         return imageUrl;
     }
 
-    public OfferSummaryView setImageUrl(String imageUrl) {
+    public OfferDetailsView setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
         return this;
     }
@@ -60,7 +72,7 @@ public class OfferSummaryView {
         return mileage;
     }
 
-    public OfferSummaryView setMileage(int mileage) {
+    public OfferDetailsView setMileage(int mileage) {
         this.mileage = mileage;
         return this;
     }
@@ -69,7 +81,7 @@ public class OfferSummaryView {
         return price;
     }
 
-    public OfferSummaryView setPrice(int price) {
+    public OfferDetailsView setPrice(int price) {
         this.price = price;
         return this;
     }
@@ -78,7 +90,7 @@ public class OfferSummaryView {
         return transmission;
     }
 
-    public OfferSummaryView setTransmission(TransmissionEnum transmission) {
+    public OfferDetailsView setTransmission(TransmissionEnum transmission) {
         this.transmission = transmission;
         return this;
     }
@@ -87,7 +99,7 @@ public class OfferSummaryView {
         return year;
     }
 
-    public OfferSummaryView setYear(int year) {
+    public OfferDetailsView setYear(int year) {
         this.year = year;
         return this;
     }
@@ -96,8 +108,17 @@ public class OfferSummaryView {
         return model;
     }
 
-    public OfferSummaryView setModel(String model) {
+    public OfferDetailsView setModel(String model) {
         this.model = model;
+        return this;
+    }
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public OfferDetailsView setSeller(String seller) {
+        this.seller = seller;
         return this;
     }
 
@@ -105,8 +126,17 @@ public class OfferSummaryView {
         return brand;
     }
 
-    public OfferSummaryView setBrand(String brand) {
+    public OfferDetailsView setBrand(String brand) {
         this.brand = brand;
+        return this;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public OfferDetailsView setId(Long id) {
+        this.id = id;
         return this;
     }
 }

@@ -27,14 +27,16 @@
             </div>
             <div class="card-body pb-1">
                 <h5 class="card-title">
-                    Offer year Brand name Model name</h5>
+                    <span th:text="*{year}">year</span>
+                    <span th:text="*{brand}">brand</span>
+                    <span th:text="*{model}">model</span></h5>
             </div>
             <ul class="offer-details list-group list-group-flush">
                 <li class="list-group-item">
-                    <div class="card-text"><span th:text="*{mileage}">Mileage</span></div>
-                    <div class="card-text"><span th:text="*{price}">Price</span></div>
-                    <div class="card-text"><span th:text="*{engine}">Engine type</span></div>
-                    <div class="card-text"><span th:text="*{transmission}">Transmission type</span></div>
+                    <div class="card-text"><span th:text="|Mileage: *{mileage}|">Mileage</span></div>
+                    <div class="card-text"><span th:text="|Price: *{price}|">Price</span></div>
+                    <div class="card-text"><span th:text="|Engine: *{engine}|">Engine type</span></div>
+                    <div class="card-text"><span th:text="|Transmission: *{transmission}|">Transmission type</span></div>
                 </li>
             </ul>
             <div class="card-body">

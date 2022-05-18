@@ -3,6 +3,7 @@ package com.example.mobilelele.service.impl;
 import com.example.mobilelele.model.entity.Offer;
 import com.example.mobilelele.model.entity.enums.EngineEnum;
 import com.example.mobilelele.model.entity.enums.TransmissionEnum;
+import com.example.mobilelele.model.view.OfferDetailsView;
 import com.example.mobilelele.model.view.OfferSummaryView;
 import com.example.mobilelele.repository.ModelRepository;
 import com.example.mobilelele.repository.OfferRepository;
@@ -47,7 +48,7 @@ public class OfferServiceImpl implements OfferService {
 
             Offer offer2 = new Offer();
             offer2
-                    .setModel(modelRepository.findById(1L).orElse(null))
+                    .setModel(modelRepository.findById(2L).orElse(null))
                     .setEngine(EngineEnum.DIESEL)
                     .setTransmission(TransmissionEnum.AUTOMATIC)
                     .setMileage(209000)
@@ -72,12 +73,33 @@ public class OfferServiceImpl implements OfferService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public OfferDetailsView getOfferDetails(Long id) {
+        return offerRepository.findById(id)
+                .stream()
+                .map(offer -> {
+                    OfferDetailsView offerDetailsView = modelMapper.map(offer, OfferDetailsView.class);
+                    offerDetailsView.setBrand(offer.getModel().getBrand().getName());
+                    offerDetailsView.setSeller(offer.getSeller().getFirstName() + " " + offer.getSeller().getLastName());
+                    offerDetailsView.setModel(offer.getModel().getName());
+                    return offerDetailsView;
+                })
+                .findAny()
+                .orElse(null);
+
+    }
+
+    @Override
+    public void deleteOffer(Long id) {
+        offerRepository.deleteById(id);
+    }
+
     private OfferSummaryView map(Offer offer) {
         OfferSummaryView summaryView = this.modelMapper
                 .map(offer, OfferSummaryView.class);
 
         summaryView.setModel(offer.getModel().getName());
-       // summaryView.setBrand(offer.getModel().getBrand().getName());
+        summaryView.setBrand(offer.getModel().getBrand().getName());
         return summaryView;
     }
 }
