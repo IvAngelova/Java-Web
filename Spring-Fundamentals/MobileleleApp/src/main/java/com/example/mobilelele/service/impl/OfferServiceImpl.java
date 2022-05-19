@@ -3,16 +3,19 @@ package com.example.mobilelele.service.impl;
 import com.example.mobilelele.model.entity.Offer;
 import com.example.mobilelele.model.entity.enums.EngineEnum;
 import com.example.mobilelele.model.entity.enums.TransmissionEnum;
+import com.example.mobilelele.model.service.OfferUpdateServiceModel;
 import com.example.mobilelele.model.view.OfferDetailsView;
 import com.example.mobilelele.model.view.OfferSummaryView;
 import com.example.mobilelele.repository.ModelRepository;
 import com.example.mobilelele.repository.OfferRepository;
 import com.example.mobilelele.repository.UserRepository;
 import com.example.mobilelele.service.OfferService;
+import com.example.mobilelele.web.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -92,6 +95,24 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public void deleteOffer(Long id) {
         offerRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateOffer(OfferUpdateServiceModel offerUpdateServiceModel) {
+        Offer offer = offerRepository.findById(offerUpdateServiceModel.getId())
+                .orElseThrow(() -> new ObjectNotFoundException("Offer with id "
+                        + offerUpdateServiceModel.getId() + " not found!"));
+
+        offer.setPrice(offerUpdateServiceModel.getPrice())
+                .setDescription(offerUpdateServiceModel.getDescription())
+                .setEngine(offerUpdateServiceModel.getEngine())
+                .setImageUrl(offerUpdateServiceModel.getImageUrl())
+                .setMileage(offerUpdateServiceModel.getMileage())
+                .setTransmission(offerUpdateServiceModel.getTransmission())
+                .setYear(offerUpdateServiceModel.getYear());
+
+        offerRepository.save(offer);
+
     }
 
     private OfferSummaryView map(Offer offer) {

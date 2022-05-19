@@ -38,10 +38,11 @@
             <div class="form-group col-md-6 mb-3">
                 <label for="lastName" class="text-white font-weight-bold">Last Name</label>
                 <input id="lastName"
-                       name="lastName"
+                       th:field="*{lastName}"
+                       th:errorclass="is-invalid"
                        type="text" min="2" max="20" class="form-control"
                        placeholder="Last name"/>
-                <p class="errors alert alert-danger">
+                <p class="invalid-feedback errors alert alert-danger">
                     Last name is required.
                 </p>
             </div>
@@ -50,32 +51,47 @@
             <div class="form-group col-md-6 mb-3">
                 <label for="username" class="text-white font-weight-bold">Username</label>
                 <input id="username"
-                       name="username"
+                       th:field="*{username}"
+                       th:errorclass="is-invalid"
                        type="text" min="2" max="20" class="form-control"
                        placeholder="Username"/>
-                <p class="errors alert alert-danger">
+                <p class="invalid-feedback errors alert alert-danger">
                     Username is required.
                 </p>
             </div>
             <div class="form-group col-md-6 mb-3">
                 <label for="password" class="text-white font-weight-bold">Password</label>
                 <input id="password"
-                       name="password"
+                       th:field="*{password}"
+                       th:errorclass="is-invalid"
                        type="password" min="2" max="20" class="form-control"
                        placeholder="Password"/>
-                <p class="errors alert alert-danger">
+                <p class="invalid-feedback errors alert alert-danger">
                     Password is required.
                 </p>
             </div>
         </div>
-
-        <div th:if="${usernameOccupied}" class="row">
-            <div class="form-group col-md-12 mb-6">
-                <p class="errors alert alert-danger">
-                    Username is occupied.
+        <div class="row">
+            <div class="form-group col-md-6 mb-3">
+                <label for="confirmPassword" class="text-white font-weight-bold">Confirm Password</label>
+                <input id="confirmPassword"
+                       th:field="*{confirmPassword}"
+                       th:errorclass="is-invalid"
+                       type="password" min="2" max="20" class="form-control"
+                       placeholder="Confirm password"/>
+                <p class="invalid-feedback errors alert alert-danger">
+                    Confirm Password is required.
                 </p>
             </div>
         </div>
+
+<!--        <div th:if="${usernameOccupied}" class="row">-->
+<!--            <div class="form-group col-md-12 mb-6">-->
+<!--                <p class="errors alert alert-danger">-->
+<!--                    Username is occupied.-->
+<!--                </p>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <div class="row">
             <div class="col col-md-4">

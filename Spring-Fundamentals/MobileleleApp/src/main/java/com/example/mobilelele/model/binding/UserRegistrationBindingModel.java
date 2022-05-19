@@ -1,5 +1,7 @@
 package com.example.mobilelele.model.binding;
 
+import com.example.mobilelele.model.validator.UniqueUserName;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -10,8 +12,15 @@ public class UserRegistrationBindingModel {
     @NotNull
     @Size(min = 4, max = 20)
     private String lastName;
+    @UniqueUserName
+    @NotNull
+    @Size(min = 4, max = 20)
     private String username;
+    @NotNull
+    @Size(min = 4, max = 20)
     private String password;
+    @NotNull
+    @Size(min = 4, max = 20)
     private String confirmPassword;
 
     public UserRegistrationBindingModel() {

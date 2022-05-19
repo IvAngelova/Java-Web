@@ -52,12 +52,12 @@ public class UserRegistrationController {
         UserRegistrationServiceModel serviceModel = modelMapper
                 .map(userModel, UserRegistrationServiceModel.class);
 
-        if (!userService.isUsernameFree(serviceModel.getUsername())) {
-
-            redirectAttributes.addFlashAttribute("userModel", userModel);
-            redirectAttributes.addFlashAttribute("usernameOccupied", true);
-            return "redirect:/users/register";
-        }
+//        if (!userService.isUsernameFree(serviceModel.getUsername())) {
+//
+//            redirectAttributes.addFlashAttribute("userModel", userModel);
+//            redirectAttributes.addFlashAttribute("usernameOccupied", true);
+//            return "redirect:/users/register";
+//        }
 
         userService.registerAndLoginUser(serviceModel);
         return "redirect:/";

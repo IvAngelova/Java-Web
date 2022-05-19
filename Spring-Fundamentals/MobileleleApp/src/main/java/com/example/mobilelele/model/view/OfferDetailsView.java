@@ -32,6 +32,8 @@ public class OfferDetailsView {
 
     private String brand;
 
+    private String description;
+
     public Instant getCreated() {
         return created;
     }
@@ -137,6 +139,15 @@ public class OfferDetailsView {
 
     public OfferDetailsView setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public OfferDetailsView setDescription(String description) {
+        this.description = description;
         return this;
     }
 }
