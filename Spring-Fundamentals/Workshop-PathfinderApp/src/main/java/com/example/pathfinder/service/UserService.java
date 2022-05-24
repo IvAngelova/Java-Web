@@ -1,5 +1,6 @@
 package com.example.pathfinder.service;
 
+import com.example.pathfinder.model.entity.User;
 import com.example.pathfinder.model.service.UserServiceModel;
 
 public interface UserService {
@@ -14,4 +15,6 @@ public interface UserService {
     void logout();
 
     UserServiceModel findByID(Long id);
+
+    User findCurrentLoginUserEntity();
 }
