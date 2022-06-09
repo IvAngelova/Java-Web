@@ -1,20 +1,19 @@
 package com.example.mobilelele.web;
 
+import com.example.mobilelele.model.binding.OfferAddBindingModel;
 import com.example.mobilelele.model.binding.OfferUpdateBindingModel;
 import com.example.mobilelele.model.entity.enums.EngineEnum;
 import com.example.mobilelele.model.entity.enums.TransmissionEnum;
+import com.example.mobilelele.model.service.OfferAddServiceModel;
 import com.example.mobilelele.model.service.OfferUpdateServiceModel;
 import com.example.mobilelele.model.view.OfferDetailsView;
+import com.example.mobilelele.service.BrandService;
 import com.example.mobilelele.service.OfferService;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.rsocket.server.RSocketServer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -24,10 +23,12 @@ public class OffersController {
 
     private final OfferService offerService;
     private final ModelMapper modelMapper;
+    private final BrandService brandService;
 
-    public OffersController(OfferService offerService, ModelMapper modelMapper) {
+    public OffersController(OfferService offerService, ModelMapper modelMapper, BrandService brandService) {
         this.offerService = offerService;
         this.modelMapper = modelMapper;
+        this.brandService = brandService;
     }
 
     @GetMapping("/offers/all")
@@ -89,6 +90,39 @@ public class OffersController {
 
         return "redirect:/offers/" + id + "/details";
     }
+
+
+    @GetMapping("/offers/add")
+    public String addOffer(Model model){
+
+        if (!model.containsAttribute("offerAddBindingModel")) {
+            model.
+                    addAttribute("offerAddBindingModel", new OfferAddBindingModel()).
+                    addAttribute("brandsModels", brandService.getAllBrands());
+        }
+        return "offer-add";
+    }
+
+    @PostMapping("/offers/add")
+    public String addOfferConfirm(@Valid OfferAddBindingModel offerAddBindingModel,
+                                  BindingResult bindingResult,
+                                  RedirectAttributes redirectAttributes){
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("offerAddBindingModel", offerAddBindingModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.offerAddBindingModel",
+                            bindingResult)
+                    .addFlashAttribute("brandsModels", brandService.getAllBrands());
+
+            return "redirect:/offers/add";
+        }
+
+        OfferAddServiceModel savedOfferAddServiceModel = offerService.addOffer(offerAddBindingModel);
+        return "redirect:/offers/" + savedOfferAddServiceModel.getId() + "/details";
+
+    }
+
+
 
 
 }
