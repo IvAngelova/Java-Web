@@ -3,7 +3,6 @@ package com.example.mobilelele.service.impl;
 import com.example.mobilelele.model.binding.OfferAddBindingModel;
 import com.example.mobilelele.model.entity.Model;
 import com.example.mobilelele.model.entity.Offer;
-import com.example.mobilelele.model.entity.User;
 import com.example.mobilelele.model.entity.enums.EngineEnum;
 import com.example.mobilelele.model.entity.enums.TransmissionEnum;
 import com.example.mobilelele.model.service.OfferAddServiceModel;
@@ -14,14 +13,12 @@ import com.example.mobilelele.repository.ModelRepository;
 import com.example.mobilelele.repository.OfferRepository;
 import com.example.mobilelele.repository.UserRepository;
 import com.example.mobilelele.service.OfferService;
-import com.example.mobilelele.user.CurrentUser;
 import com.example.mobilelele.web.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,14 +27,14 @@ public class OfferServiceImpl implements OfferService {
     private final ModelRepository modelRepository;
     private final OfferRepository offerRepository;
     private final ModelMapper modelMapper;
-    private final CurrentUser currentUser;
 
-    public OfferServiceImpl(UserRepository userRepository, ModelRepository modelRepository, OfferRepository offerRepository, ModelMapper modelMapper, CurrentUser currentUser) {
+
+    public OfferServiceImpl(UserRepository userRepository, ModelRepository modelRepository, OfferRepository offerRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.modelRepository = modelRepository;
         this.offerRepository = offerRepository;
         this.modelMapper = modelMapper;
-        this.currentUser = currentUser;
+
     }
 
     @Override
@@ -130,8 +127,9 @@ public class OfferServiceImpl implements OfferService {
         offerAddServiceModel.setId(null);
         Offer newOffer = modelMapper.map(offerAddServiceModel, Offer.class);
         newOffer.setCreated(Instant.now());
-        Optional<User> user = userRepository.findByUsername(currentUser.getUsername());
-        newOffer.setSeller(user.get());
+        //TODO
+//        Optional<User> user = userRepository.findByUsername(currentUser.getUsername());
+//        newOffer.setSeller(user.get());
         Model model = modelRepository.getById(offerAddBindingModel.getModelId());
         newOffer.setModel(model);
 
