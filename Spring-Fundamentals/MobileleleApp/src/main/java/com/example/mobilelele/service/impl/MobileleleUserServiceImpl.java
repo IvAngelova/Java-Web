@@ -46,7 +46,7 @@ public class MobileleleUserServiceImpl implements UserDetailsService {
                 .collect(Collectors.toList());
 
         // User is the spring implementation of UserDetails interface
-        return new org.springframework.security.core.userdetails.User(
+        return new MobileleleUser(
                 userEntity.getUsername(),
                 userEntity.getPassword(),
                 authorities

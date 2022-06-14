@@ -9,7 +9,9 @@ import com.example.mobilelele.model.service.OfferUpdateServiceModel;
 import com.example.mobilelele.model.view.OfferDetailsView;
 import com.example.mobilelele.service.BrandService;
 import com.example.mobilelele.service.OfferService;
+import com.example.mobilelele.service.impl.MobileleleUser;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -106,7 +108,8 @@ public class OffersController {
     @PostMapping("/offers/add")
     public String addOfferConfirm(@Valid OfferAddBindingModel offerAddBindingModel,
                                   BindingResult bindingResult,
-                                  RedirectAttributes redirectAttributes){
+                                  RedirectAttributes redirectAttributes,
+                                  @AuthenticationPrincipal MobileleleUser user){
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("offerAddBindingModel", offerAddBindingModel)
@@ -117,7 +120,7 @@ public class OffersController {
             return "redirect:/offers/add";
         }
 
-        OfferAddServiceModel savedOfferAddServiceModel = offerService.addOffer(offerAddBindingModel);
+        OfferAddServiceModel savedOfferAddServiceModel = offerService.addOffer(offerAddBindingModel, user.getUserIdentifier());
         return "redirect:/offers/" + savedOfferAddServiceModel.getId() + "/details";
 
     }

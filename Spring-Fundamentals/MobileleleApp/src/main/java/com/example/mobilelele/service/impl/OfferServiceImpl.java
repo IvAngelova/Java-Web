@@ -3,6 +3,7 @@ package com.example.mobilelele.service.impl;
 import com.example.mobilelele.model.binding.OfferAddBindingModel;
 import com.example.mobilelele.model.entity.Model;
 import com.example.mobilelele.model.entity.Offer;
+import com.example.mobilelele.model.entity.User;
 import com.example.mobilelele.model.entity.enums.EngineEnum;
 import com.example.mobilelele.model.entity.enums.TransmissionEnum;
 import com.example.mobilelele.model.service.OfferAddServiceModel;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -121,15 +123,14 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public OfferAddServiceModel addOffer(OfferAddBindingModel offerAddBindingModel) {
+    public OfferAddServiceModel addOffer(OfferAddBindingModel offerAddBindingModel, String ownerId) {
         OfferAddServiceModel offerAddServiceModel = modelMapper.map(offerAddBindingModel,
                 OfferAddServiceModel.class);
         offerAddServiceModel.setId(null);
         Offer newOffer = modelMapper.map(offerAddServiceModel, Offer.class);
         newOffer.setCreated(Instant.now());
-        //TODO
-//        Optional<User> user = userRepository.findByUsername(currentUser.getUsername());
-//        newOffer.setSeller(user.get());
+        User userEntity = userRepository.findByUsername(ownerId).orElseThrow();
+        newOffer.setSeller(userEntity);
         Model model = modelRepository.getById(offerAddBindingModel.getModelId());
         newOffer.setModel(model);
 
