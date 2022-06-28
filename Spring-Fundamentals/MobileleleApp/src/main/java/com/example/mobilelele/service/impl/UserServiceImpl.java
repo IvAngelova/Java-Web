@@ -7,6 +7,10 @@ import com.example.mobilelele.model.service.UserRegistrationServiceModel;
 import com.example.mobilelele.repository.UserRepository;
 import com.example.mobilelele.repository.UserRoleRepository;
 import com.example.mobilelele.service.UserService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +23,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRoleRepository userRoleRepository;
+    private final MobileleleUserServiceImpl mobileleleUserService;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository, MobileleleUserServiceImpl mobileleleUserService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRoleRepository = userRoleRepository;
+        this.mobileleleUserService = mobileleleUserService;
     }
 
 
@@ -48,8 +54,17 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(newUser);
 
-        //TODO:Register user
-       // login(newUser);
+        UserDetails principal = mobileleleUserService.loadUserByUsername(newUser.getUsername());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                principal,
+                newUser.getPassword(),
+                principal.getAuthorities()
+        );
+
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(authentication);
+
     }
 
     @Override
