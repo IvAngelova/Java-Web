@@ -11,6 +11,7 @@ import com.example.mobilelele.service.BrandService;
 import com.example.mobilelele.service.OfferService;
 import com.example.mobilelele.service.impl.MobileleleUser;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class OffersController {
@@ -47,8 +49,17 @@ public class OffersController {
         return "details";
     }
 
+    //@PreAuthorize("isOwner(#id)")
+    @PreAuthorize("@offerServiceImpl.isOwner(#principal.name, #id)")
     @DeleteMapping("offers/{id}")
-    public String deleteOffer(@PathVariable Long id) {
+    public String deleteOffer(@PathVariable Long id, Principal principal) {
+
+        // Most native approach - check explicitly if the current user is an
+        //owner and throw exception if this is not the case.
+//        if (!offerService.isOwner(principal.getName(), id)) {
+//            throw new RuntimeException();
+//        }
+
         offerService.deleteOffer(id);
 
         return "redirect:/offers/all";

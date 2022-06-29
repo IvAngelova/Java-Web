@@ -4,7 +4,9 @@ import com.example.mobilelele.model.binding.OfferAddBindingModel;
 import com.example.mobilelele.model.entity.Model;
 import com.example.mobilelele.model.entity.Offer;
 import com.example.mobilelele.model.entity.User;
+import com.example.mobilelele.model.entity.UserRole;
 import com.example.mobilelele.model.entity.enums.EngineEnum;
+import com.example.mobilelele.model.entity.enums.RoleEnum;
 import com.example.mobilelele.model.entity.enums.TransmissionEnum;
 import com.example.mobilelele.model.service.OfferAddServiceModel;
 import com.example.mobilelele.model.service.OfferUpdateServiceModel;
@@ -102,6 +104,32 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public void deleteOffer(Long id) {
         offerRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean isOwner(String userName, Long id) {
+
+        Optional<Offer> offerOpt = offerRepository.
+                findById(id);
+        Optional<User> caller = userRepository.
+                findByUsername(userName);
+
+        if (offerOpt.isEmpty() || caller.isEmpty()) {
+            return false;
+        }
+
+        Offer offer = offerOpt.get();
+
+       return isAdmin(caller.get()) || offer.getSeller().getUsername().equals(userName);
+    }
+
+
+    private boolean isAdmin(User userEntity) {
+        return userEntity.
+                getRoles().
+                stream().
+                map(UserRole::getRole).
+                anyMatch(r -> r == RoleEnum.ADMIN);
     }
 
     @Override
