@@ -3,6 +3,7 @@ package com.example.books.web;
 
 import com.example.books.model.dto.BookDTO;
 import com.example.books.service.BookService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -75,6 +76,18 @@ public class BooksController {
         return updatedBookId != null ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/pageable")
+    public ResponseEntity<Page<BookDTO>> getBooks(
+            @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "3") Integer pageSize,
+            @RequestParam(name = "sortBy", defaultValue = "id") String sortBy) {
+
+        return ResponseEntity.ok(
+                bookService.getBooks(pageNo, pageSize, sortBy));
+
+    }
+
 
 
 }

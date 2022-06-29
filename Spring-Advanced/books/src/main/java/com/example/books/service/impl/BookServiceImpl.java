@@ -8,6 +8,10 @@ import com.example.books.repository.AuthorRepository;
 import com.example.books.repository.BookRepository;
 import com.example.books.service.BookService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -85,6 +89,17 @@ public class BookServiceImpl implements BookService {
                 .setAuthor(author);
 
         return bookRepository.save(bookEntity).getId();
+
+    }
+
+    @Override
+    public Page<BookDTO> getBooks(int pageNo, int pageSize, String sortBy) {
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+
+        return bookRepository
+                .findAll(pageable)
+                .map(this::map);
 
     }
 
