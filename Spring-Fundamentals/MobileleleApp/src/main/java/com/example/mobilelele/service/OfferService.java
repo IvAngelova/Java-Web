@@ -13,7 +13,7 @@ public interface OfferService {
 
     List<OfferSummaryView> getAllOffers();
 
-    OfferDetailsView getOfferDetails(Long id);
+    OfferDetailsView getOfferDetails(Long id, String currentUser);
 
     void deleteOffer(Long id);
 

@@ -34,6 +34,8 @@ public class OfferDetailsView {
 
     private String description;
 
+    private boolean canDelete;
+
     public Instant getCreated() {
         return created;
     }
@@ -148,6 +150,15 @@ public class OfferDetailsView {
 
     public OfferDetailsView setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    public boolean isCanDelete() {
+        return canDelete;
+    }
+
+    public OfferDetailsView setCanDelete(boolean canDelete) {
+        this.canDelete = canDelete;
         return this;
     }
 }

@@ -86,7 +86,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public OfferDetailsView getOfferDetails(Long id) {
+    public OfferDetailsView getOfferDetails(Long id, String currentUser) {
         return offerRepository.findById(id)
                 .stream()
                 .map(offer -> {
@@ -94,6 +94,7 @@ public class OfferServiceImpl implements OfferService {
                     offerDetailsView.setBrand(offer.getModel().getBrand().getName());
                     offerDetailsView.setSeller(offer.getSeller().getFirstName() + " " + offer.getSeller().getLastName());
                     offerDetailsView.setModel(offer.getModel().getName());
+                    offerDetailsView.setCanDelete(isOwner(currentUser, id));
                     return offerDetailsView;
                 })
                 .findAny()
